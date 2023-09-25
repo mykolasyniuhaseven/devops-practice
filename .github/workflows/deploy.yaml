@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       name: ${{ github.ref_name }}
-      url: ${{ steps.deploy.outputs.vm_url }}
+      url: http://3.79.229.70:3000
     steps:
       - id: deploy
         name: Deploy
