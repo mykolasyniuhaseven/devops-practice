@@ -8,6 +8,8 @@ RUN npm ci
 
 COPY --chown=node:node . .
 
+EXPOSE 3000
+
 RUN npm run build
 
 ENV NODE_ENV production
@@ -22,6 +24,9 @@ RUN npm ci
 
 COPY --chown=node:node . .
 
-RUN npm run start:prod
+EXPOSE 3000
+
+RUN npm run build
+CMD ["npm", "run", "start:prod"]
 
 ENV NODE_ENV production
