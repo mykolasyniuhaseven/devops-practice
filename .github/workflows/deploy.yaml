@@ -20,9 +20,6 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # SSH into your EC2 instance
-            ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}
-            
             # Pull the latest code from your repository
             cd /apps/devops-practice
             git pull origin master
