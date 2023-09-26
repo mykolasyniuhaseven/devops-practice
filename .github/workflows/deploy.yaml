@@ -1,27 +1,32 @@
-name: Deploy
+name: Deploy to EC2
 
 on:
   push:
     branches:
       - master
 
-permissions:
-  contents: read
-
 jobs:
-  EC2-Deploy:
+  deploy:
     runs-on: ubuntu-latest
-    env:
-      name: ${{ github.ref_name }}
-      url: http://3.79.229.70:3000
+
     steps:
-      - id: deploy
-        name: Deploy
-        uses: bitovi/github-actions-deploy-docker-to-ec2@v0.5.7
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: SSH into EC2 instance and deploy
+        uses: appleboy/ssh-action@master
         with:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_default_region: eu-central-1
-          app_port: 3000
-
-
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # SSH into your EC2 instance
+            ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}
+            
+            # Pull the latest code from your repository
+            cd /apps/devops-practice
+            git pull origin master
+            
+            # Build and run the Docker container
+            docker-compose down
+            docker-compose up -d
