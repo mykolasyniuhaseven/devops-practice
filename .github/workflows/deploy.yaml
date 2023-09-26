@@ -21,10 +21,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             # Pull the latest code from your repository
-            ls || true
-            cd apps
-            ls || true
-            cd /apps/devops-practice
+            cd apps/devops-practice
             git pull origin master
             
             # Build and run the Docker container
